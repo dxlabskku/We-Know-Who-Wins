@@ -20,11 +20,26 @@ The data used in this study is from England's 1st division professional football
 
 ## Usage
 
-You can run all steps from preprocessing the raw html data to testing new example through the following commands.
+You can run every steps from preprocessing the raw html data to testing new example through the following commands.
+
+1. Preprocessing
+
+This step takes raw html files as input and returns preprocessed `torch_geometric.Data`-type json file. The `prediction Minute` refers to the time period you want to make passing network to predict the outcome of the match.
 
 ```python
 python3 preprocess.py --gpu_num [YOUR GPU NUM] --pred_min [Prediction Minute]
 ```
 
+2. Training
 
+This step takes two json files (Home Data and Away Data) and trains the proposed model in our study. You can run this step through the following command.
 
+```python
+python3 training.py --gpu_num [YOUR GPU NUM]
+```
+
+The hyperparameters needed to train the model will be set as default unless you designate them by parsers.
+
+```python
+python3 training.py --gpu_num [YOUR GPU NUM] --n_epochs 1000 --e_patience 50 --lr 0.001 --pred_min 90
+```
