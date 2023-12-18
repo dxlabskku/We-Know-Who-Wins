@@ -10,4 +10,4 @@ Both the passing graph and in-game features of each team are input to the model.
 
 ## Dependencies
 
-Please refer to requirements.txt for package dependency to reproduce the code in this repository.
+Please refer to [requirements.txt](requirements.txt) for package dependency to reproduce the code in this repository.
