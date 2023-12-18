@@ -1,3 +1,3 @@
 # We-Know-Who-Win
 
-![Model_Structure](We-Know-Who-Win/model_structure.png)
+![Model_Structure](model_structure.png)
