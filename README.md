@@ -24,7 +24,7 @@ You can run every steps from preprocessing the raw html data to testing new exam
 
 1. Preprocessing
 
-This step takes raw html files as input and returns preprocessed `torch_geometric.Data`-type json file. The `prediction Minute` refers to the time period you want to make passing network to predict the outcome of the match.
+This step takes raw html files as input and returns preprocessed `torch_geometric.Data`-type json file. The `pred_min` parser refers to the time period you want to make passing network to predict the outcome of the match.
 
 ```python
 python3 preprocess.py --gpu_num [YOUR GPU NUM] --pred_min [Prediction Minute]
@@ -56,7 +56,7 @@ python3 testing.py --use_testloader yes --new_scaler no --gpu_num [YOUR GPU NUM]
 ```
 
 
-Then you should provide the directory of the saved testloaders and scalers. These will be automatically saved in your `Training` folder after you run the training step.
+Then you should provide the directory of the saved testloaders and scalers. These will be automatically saved in your [Training](Training) folder after you run the training step.
 
 
 For the latter, you can do it through the following command
