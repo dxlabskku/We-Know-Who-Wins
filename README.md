@@ -50,16 +50,21 @@ With the trained model, you can test the model performance. Here, there are two 
 
 For the former, you can do it through the following command
 
+
 ```python
 python3 testing.py --use_testloader yes --new_scaler no --gpu_num [YOUR GPU NUM]
 ```
 
+
 Then you should provide the directory of the saved testloaders and scalers. These will be automatically saved in your `Training` folder after you run the training step.
 
+
 For the latter, you can do it through the following command
+
 
 ```python
 python3 testing.py --use_testloader no --new_scaler no --gpu_num [YOUR GPU NUM]
 ```
+
 
 Here, the `--new_scaler` parser is [no] when you want to test a single match, or [yes] when you want to test more than one matches.
