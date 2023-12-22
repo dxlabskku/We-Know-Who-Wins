@@ -18,6 +18,8 @@ The data used in this study is from England's 1st division professional football
 
 [Filelink](https://drive.google.com/drive/folders/1w2XSlFA7iWhVxeO2IGEC8JGbf-X7YHNc?usp=drive_link)
 
+**After downloading all html files, please create a new folder named `dataset` under the cloned git repo.**
+
 ## Usage
 
 You can run every steps from preprocessing the raw html data to testing new example through the following commands.
