@@ -1,4 +1,4 @@
-# We-Know-Who-Win
+# We-Know-Who-Wins
 
 This repository contains the Pytorch implementation code for the paper "We Know Who Wins: Graph-oriented Approaches of Passing Networks for Predictive Football Match Outcomes"
 
@@ -6,7 +6,7 @@ This repository contains the Pytorch implementation code for the paper "We Know 
 
 ![Model_Structure](codes/model_structure_GAT.png)
 
-Both the passing graph and in-game features of each team are input to the model. The passing graph passes through three convolution blocks consisting of graph convolution-dropout-elu layer to be pooled into graph embedding. The graph embeddings of both teams that have been fused with the in-game features are combined again to finally return the probability for each class.
+Both the passing graph and in-game features of each team are input to the model. The passing graph passes through three graph network blocks consisting of graph attention-dropout-elu layer to be pooled into graph embedding. The graph embeddings of both teams that have been fused with the in-game features are combined again to finally return the probability for each class.
 
 ## Dependencies
 
@@ -26,7 +26,7 @@ You can run every steps from preprocessing the raw html data to testing new exam
 
 1. Preprocessing
 
-This step takes raw html files as input and returns preprocessed `torch_geometric.Data`-type json file. The `pred_min` parser refers to the time period you want to make passing network to predict the outcome of the match. The default value will be set as 90 for `pred_min` parser unless provided.
+This step takes raw html files as input and returns preprocessed `torch_geometric.Data`-type json file. The `pred_min` argument refers to the time period you want to make passing network to predict the outcome of the match. The default value will be set as 90 for `pred_min` argument unless provided.
 
 ```python
 python3 preprocess.py --gpu_num [YOUR GPU NUM] --pred_min [Prediction Minute]
@@ -40,7 +40,7 @@ This step takes two json files (Home Data and Away Data) and trains the proposed
 python3 training.py --gpu_num [YOUR GPU NUM]
 ```
 
-The hyperparameters needed to train the model will be set as default as 1000 epochs with 10 patiences, 0.001 of learning rate and 90 minutesof prediction minute, unless you designate them by parsers as below.
+The hyperparameters needed to train the model will be set as default as 1000 epochs with 10 patiences, 0.001 of learning rate and 90 minutesof prediction minute, unless you designate them by arguments. Plus, if you want to train the model for early-stage prediction like 45-minute or 70-minute, designate the value by providing additional argument --pred_min at the end of the command as below.
 
 ```python
 python3 training.py --gpu_num [YOUR GPU NUM] --n_epochs 500 --e_patience 100 --lr 0.01 --pred_min 45
@@ -65,4 +65,4 @@ python3 testing.py --use_testloader no --new_scaler no --gpu_num [YOUR GPU NUM]
 ```
 
 
-Here, the `--new_scaler` parser is [no] when you want to test a single match, or [yes] when you want to test more than one matches.
+Here, the `--new_scaler` argument is [no] when you want to test a single match, or [yes] when you want to test more than one matches.
