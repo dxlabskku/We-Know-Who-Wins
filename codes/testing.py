@@ -1,13 +1,8 @@
-import pandas as pd 
-import numpy as np
-from tqdm import tqdm
 import torch
 from torch_geometric.loader import DataLoader
-import time
 import pickle
 
 from sklearn import metrics
-from torch_geometric.nn import GCNConv
 
 import warnings
 from pandas.errors import SettingWithCopyWarning
@@ -15,9 +10,6 @@ from os import listdir
 from os.path import isfile, join
 
 warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
-
-import sys
-sys.path.append('../')
 
 from utils.preprocess_utils import *
 from utils.training_utils import *
@@ -28,6 +20,7 @@ parser = argparse.ArgumentParser(description='testing parser')
 parser.add_argument('--use_testloader')
 parser.add_argument('--new_scaler') 
 parser.add_argument('--gpu_num', type = int)  
+parser.add_argument('--pred_min', type = int, default = 90)
 
 args = parser.parse_args()
 
@@ -35,12 +28,12 @@ GPU_NUM = args.gpu_num
 device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
 torch.cuda.set_device(device) 
 
-model_dir = 'final_90.pkl'
+model_dir = f'final_{args.pred_min}.pkl'
 
 if __name__ == "__main__":
         if args.use_testloader == 'yes':
-            loader = torch.load('final_90_testloader_home.pth')
-            loader2 = torch.load('final_90_testloader_away.pth')
+            loader = torch.load(f'final_{args.pred_min}_testloader_home.pth')
+            loader2 = torch.load(f'final_{args.pred_min}_testloader_away.pth')
 
             y_trues, y_preds, y_pred_probs = [], [], []
 
@@ -71,10 +64,11 @@ if __name__ == "__main__":
 
         else:
             file_dir = input("Provide your directory with test html files : ")  
+            file_dir = file_dir + '/'
             files = [f for f in listdir(file_dir) if isfile(join(file_dir, f))]
 
-            preprocess_home = preprocess_home_data(file_dir, files, 90)
-            preprocess_away = preprocess_away_data(file_dir, files, 90)
+            preprocess_home = preprocess_home_data(file_dir, files, args.pred_min)
+            preprocess_away = preprocess_away_data(file_dir, files, args.pred_min)
 
             df_x3_home, results_home, match_home, xs_home, xs2_home, edge_indices_home, edge_attributes_home, flag_home, x2_home = preprocess_home.preprocess()
             df_x3_away, results_away, match_away, xs_away, xs2_away, edge_indices_away, edge_attributes_away, flag_away, x2_away = preprocess_away.preprocess()
@@ -87,7 +81,10 @@ if __name__ == "__main__":
                 dataset_home = home_data.get_dataset()
                 dataset_away = away_data.get_dataset()
 
-                bs = 64
+                if args.pred_min == 45:
+                    bs = 16
+                else:
+                    bs = 64
 
                 loader = DataLoader(dataset_home, batch_size = bs)
                 loader2 = DataLoader(dataset_away, batch_size = bs)
@@ -130,7 +127,10 @@ if __name__ == "__main__":
                 dataset_home = home_data.get_dataset()
                 dataset_away = away_data.get_dataset()
 
-                bs = 64
+                if args.pred_min == 45:
+                    bs = 16
+                else:
+                    bs = 64
 
                 loader = DataLoader(dataset_home, batch_size = bs)
                 loader2 = DataLoader(dataset_away, batch_size = bs)
