@@ -94,8 +94,6 @@ class make_data_loader:
             valid_dataset += [train_dataset[i] for i in list(test_index)]
             valid_dataset2 += [train_dataset2[i] for i in list(test_index)]
 
-
-
         print(f'Number of training graphs: {len(train_dataset_real)} -> {round(len(train_dataset_real)/len(dataset_target)*100)}%')
         print(f"Number of validation graphs: {len(valid_dataset)} -> {round(len(valid_dataset)/len(dataset_target)*100)}%")
         print(f'Number of test graphs: {len(test_dataset)} -> {round(len(test_dataset)/len(dataset_target)*100)}%')
