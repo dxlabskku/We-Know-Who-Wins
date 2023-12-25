@@ -280,123 +280,126 @@ class preprocess_home_data:
         for htmls in tqdm(self.onlyfiles):
                 cnt += 1
                 lp =  load_and_preprocess(f'{self.directory}{htmls}', self.min)
-                a, b, c, d, e, f, g, h, date = lp.get_passes_between_df()
-                match_home.append(h)
-                condition = lambda x : 1 if x > 0 else 0
-                e['subs'] = e['subs'].apply(condition)
-                x_temp = e.merge(c[['name', 'x', 'y']], on = 'name').sort_values(by = 'shirtNo').drop(['name','playerId',  'teamId', 'isFirstEleven'], axis = 1).reset_index(drop = True)
-                x_temp.reset_index(inplace = True)
-                if 'Card' not in x_temp.columns.tolist():
-                    x_temp['Card'] = 0
-                if 'OffsidePass' not in x_temp.columns.tolist():
-                    x_temp['OffsidePass'] = 0
-                if 'OffsideProvoked' not in x_temp.columns.tolist():
-                    x_temp['OffsideProvoked'] = 0
-                if 'Punch' not in x_temp.columns.tolist():
-                    x_temp['Punch'] = 0
-                if 'Save' not in x_temp.columns.tolist():
-                    x_temp['Save'] = 0
-                if 'MissedShots' not in x_temp.columns.tolist():
-                    x_temp['MissedShots'] = 0
-                if 'Tackle' not in x_temp.columns.tolist():
-                    x_temp['Tackle'] = 0
-                if 'TakeOn' not in x_temp.columns.tolist():
-                    x_temp['TakeOn'] = 0
-                if 'BlockedPass' not in x_temp.columns.tolist():
-                    x_temp['BlockedPass'] = 0
-                if 'SavedShot' not in x_temp.columns.tolist():
-                    x_temp['SavedShot'] = 0
-                if 'CornerAwarded' not in x_temp.columns.tolist():
-                    x_temp['CornerAwarded'] = 0
-                if 'Dispossessed' not in x_temp.columns.tolist():
-                    x_temp['Dispossessed'] = 0
-                if 'Interception' not in x_temp.columns.tolist():
-                    x_temp['Interception'] = 0
-                
-                x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
-                                'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
-
-                corr = dict(zip(x_temp.shirtNo, x_temp.index))
-                x_i = x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
-                                'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values
-                
-                x_i2 = x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values
-                
-                if len(x_i) == 11:
-                    flag_home.append(False)
-                else:
-                    flag_home.append(True)
-                
-                xs_home.append(x_i)
-                xs2_home.append(x_i2)
-
-                results_home.append(np.array([g]))
-
-                edge = a.sort_values(by = 'shirtNo')
-                edge['pass_traj'] = edge['position'] + edge['position_end']
-                edge_a = list(edge['shirtNo'])
-
-                for a in range(len(edge_a)):
-                    edge_a[a] = corr[edge_a[a]]
-
-                edge_b = list(edge['shirtNo_end'])
-
-                for a in range(len(edge_b)):
-                    edge_b[a] = corr[edge_b[a]]
-
-                edge_index = np.array([edge_a, edge_b])
-                edge_attr = edge[['pass_count']].values
-
-                if 'Card' not in x_temp.columns.tolist():
-                    x_temp['Card'] = 0
-                if 'OffsidePass' not in x_temp.columns.tolist():
-                    x_temp['OffsidePass'] = 0
-                if 'OffsideProvoked' not in x_temp.columns.tolist():
-                    x_temp['OffsideProvoked'] = 0
-                if 'Punch' not in x_temp.columns.tolist():
-                    x_temp['Punch'] = 0
-                if 'Save' not in x_temp.columns.tolist():
-                    x_temp['Save'] = 0
-                if 'MissedShots' not in x_temp.columns.tolist():
-                    x_temp['MissedShots'] = 0
-                if 'Tackle' not in x_temp.columns.tolist():
-                    x_temp['Tackle'] = 0
-                if 'TakeOn' not in x_temp.columns.tolist():
-                    x_temp['TakeOn'] = 0
-                if 'BlockedPass' not in x_temp.columns.tolist():
-                    x_temp['BlockedPass'] = 0
-                if 'SavedShot' not in x_temp.columns.tolist():
-                    x_temp['SavedShot'] = 0
-                if 'CornerAwarded' not in x_temp.columns.tolist():
-                    x_temp['CornerAwarded'] = 0
-                if 'Dispossessed' not in x_temp.columns.tolist():
-                    x_temp['Dispossessed'] = 0
-                if 'Interception' not in x_temp.columns.tolist():
-                    x_temp['Interception'] = 0
-
-                x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
+                try:
+                    a, b, c, d, e, f, g, h, date = lp.get_passes_between_df()
+                    match_home.append(h)
+                    condition = lambda x : 1 if x > 0 else 0
+                    e['subs'] = e['subs'].apply(condition)
+                    x_temp = e.merge(c[['name', 'x', 'y']], on = 'name').sort_values(by = 'shirtNo').drop(['name','playerId',  'teamId', 'isFirstEleven'], axis = 1).reset_index(drop = True)
+                    x_temp.reset_index(inplace = True)
+                    if 'Card' not in x_temp.columns.tolist():
+                        x_temp['Card'] = 0
+                    if 'OffsidePass' not in x_temp.columns.tolist():
+                        x_temp['OffsidePass'] = 0
+                    if 'OffsideProvoked' not in x_temp.columns.tolist():
+                        x_temp['OffsideProvoked'] = 0
+                    if 'Punch' not in x_temp.columns.tolist():
+                        x_temp['Punch'] = 0
+                    if 'Save' not in x_temp.columns.tolist():
+                        x_temp['Save'] = 0
+                    if 'MissedShots' not in x_temp.columns.tolist():
+                        x_temp['MissedShots'] = 0
+                    if 'Tackle' not in x_temp.columns.tolist():
+                        x_temp['Tackle'] = 0
+                    if 'TakeOn' not in x_temp.columns.tolist():
+                        x_temp['TakeOn'] = 0
+                    if 'BlockedPass' not in x_temp.columns.tolist():
+                        x_temp['BlockedPass'] = 0
+                    if 'SavedShot' not in x_temp.columns.tolist():
+                        x_temp['SavedShot'] = 0
+                    if 'CornerAwarded' not in x_temp.columns.tolist():
+                        x_temp['CornerAwarded'] = 0
+                    if 'Dispossessed' not in x_temp.columns.tolist():
+                        x_temp['Dispossessed'] = 0
+                    if 'Interception' not in x_temp.columns.tolist():
+                        x_temp['Interception'] = 0
+                    
+                    x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
                                     'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
                                     'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
                                     'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
-                x = x_i if cnt == 1 else np.vstack([x, x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
-                                                            'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                                            'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                                            'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values])
 
-                x2_home = edge_attr if cnt == 1 else np.vstack([x2_home, edge[['pass_count']].values])
-        
+                    corr = dict(zip(x_temp.shirtNo, x_temp.index))
+                    x_i = x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
+                                    'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values
+                    
+                    x_i2 = x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values
+                    
+                    if len(x_i) == 11:
+                        flag_home.append(False)
+                    else:
+                        flag_home.append(True)
+                    
+                    xs_home.append(x_i)
+                    xs2_home.append(x_i2)
 
-                x3 = x_i2 if cnt == 1 else np.vstack([x3, x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values])
-                edge_indices_home.append(edge_index)
-                edge_attributes_home.append(edge_attr)
+                    results_home.append(np.array([g]))
+
+                    edge = a.sort_values(by = 'shirtNo')
+                    edge['pass_traj'] = edge['position'] + edge['position_end']
+                    edge_a = list(edge['shirtNo'])
+
+                    for a in range(len(edge_a)):
+                        edge_a[a] = corr[edge_a[a]]
+
+                    edge_b = list(edge['shirtNo_end'])
+
+                    for a in range(len(edge_b)):
+                        edge_b[a] = corr[edge_b[a]]
+
+                    edge_index = np.array([edge_a, edge_b])
+                    edge_attr = edge[['pass_count']].values
+
+                    if 'Card' not in x_temp.columns.tolist():
+                        x_temp['Card'] = 0
+                    if 'OffsidePass' not in x_temp.columns.tolist():
+                        x_temp['OffsidePass'] = 0
+                    if 'OffsideProvoked' not in x_temp.columns.tolist():
+                        x_temp['OffsideProvoked'] = 0
+                    if 'Punch' not in x_temp.columns.tolist():
+                        x_temp['Punch'] = 0
+                    if 'Save' not in x_temp.columns.tolist():
+                        x_temp['Save'] = 0
+                    if 'MissedShots' not in x_temp.columns.tolist():
+                        x_temp['MissedShots'] = 0
+                    if 'Tackle' not in x_temp.columns.tolist():
+                        x_temp['Tackle'] = 0
+                    if 'TakeOn' not in x_temp.columns.tolist():
+                        x_temp['TakeOn'] = 0
+                    if 'BlockedPass' not in x_temp.columns.tolist():
+                        x_temp['BlockedPass'] = 0
+                    if 'SavedShot' not in x_temp.columns.tolist():
+                        x_temp['SavedShot'] = 0
+                    if 'CornerAwarded' not in x_temp.columns.tolist():
+                        x_temp['CornerAwarded'] = 0
+                    if 'Dispossessed' not in x_temp.columns.tolist():
+                        x_temp['Dispossessed'] = 0
+                    if 'Interception' not in x_temp.columns.tolist():
+                        x_temp['Interception'] = 0
+
+                    x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
+                                        'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                        'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                        'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
+                    x = x_i if cnt == 1 else np.vstack([x, x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
+                                                                'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values])
+
+                    x2_home = edge_attr if cnt == 1 else np.vstack([x2_home, edge[['pass_count']].values])
+            
+
+                    x3 = x_i2 if cnt == 1 else np.vstack([x3, x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                                                        'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                                                        'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values])
+                    edge_indices_home.append(edge_index)
+                    edge_attributes_home.append(edge_attr)
+                except:
+                    pass
 
         x3s = []
         for i in range(len(xs_home)):
@@ -433,123 +436,126 @@ class preprocess_away_data:
         for htmls in tqdm(self.onlyfiles):
                 cnt += 1
                 lp =  load_and_preprocess(f'{self.directory}{htmls}',self.min)
-                a, b, c, d, e, f, g, h, date = lp.get_passes_between_df()
-                match_away.append(h)
-                condition = lambda x : 1 if x > 0 else 0
-                f['subs'] = f['subs'].apply(condition)
-                x_temp = f.merge(d[['name', 'x', 'y']], on = 'name').sort_values(by = 'shirtNo').drop(['name','playerId',  'teamId', 'isFirstEleven'], axis = 1).reset_index(drop = True)
-                x_temp.reset_index(inplace = True)
-                if 'Card' not in x_temp.columns.tolist():
-                    x_temp['Card'] = 0
-                if 'OffsidePass' not in x_temp.columns.tolist():
-                    x_temp['OffsidePass'] = 0
-                if 'OffsideProvoked' not in x_temp.columns.tolist():
-                    x_temp['OffsideProvoked'] = 0
-                if 'Punch' not in x_temp.columns.tolist():
-                    x_temp['Punch'] = 0
-                if 'Save' not in x_temp.columns.tolist():
-                    x_temp['Save'] = 0
-                if 'MissedShots' not in x_temp.columns.tolist():
-                    x_temp['MissedShots'] = 0
-                if 'Tackle' not in x_temp.columns.tolist():
-                    x_temp['Tackle'] = 0
-                if 'TakeOn' not in x_temp.columns.tolist():
-                    x_temp['TakeOn'] = 0
-                if 'BlockedPass' not in x_temp.columns.tolist():
-                    x_temp['BlockedPass'] = 0
-                if 'SavedShot' not in x_temp.columns.tolist():
-                    x_temp['SavedShot'] = 0
-                if 'CornerAwarded' not in x_temp.columns.tolist():
-                    x_temp['CornerAwarded'] = 0
-                if 'Dispossessed' not in x_temp.columns.tolist():
-                    x_temp['Dispossessed'] = 0
-                if 'Interception' not in x_temp.columns.tolist():
-                    x_temp['Interception'] = 0
+                try:
+                    a, b, c, d, e, f, g, h, date = lp.get_passes_between_df()
+                    match_away.append(h)
+                    condition = lambda x : 1 if x > 0 else 0
+                    f['subs'] = f['subs'].apply(condition)
+                    x_temp = f.merge(d[['name', 'x', 'y']], on = 'name').sort_values(by = 'shirtNo').drop(['name','playerId',  'teamId', 'isFirstEleven'], axis = 1).reset_index(drop = True)
+                    x_temp.reset_index(inplace = True)
+                    if 'Card' not in x_temp.columns.tolist():
+                        x_temp['Card'] = 0
+                    if 'OffsidePass' not in x_temp.columns.tolist():
+                        x_temp['OffsidePass'] = 0
+                    if 'OffsideProvoked' not in x_temp.columns.tolist():
+                        x_temp['OffsideProvoked'] = 0
+                    if 'Punch' not in x_temp.columns.tolist():
+                        x_temp['Punch'] = 0
+                    if 'Save' not in x_temp.columns.tolist():
+                        x_temp['Save'] = 0
+                    if 'MissedShots' not in x_temp.columns.tolist():
+                        x_temp['MissedShots'] = 0
+                    if 'Tackle' not in x_temp.columns.tolist():
+                        x_temp['Tackle'] = 0
+                    if 'TakeOn' not in x_temp.columns.tolist():
+                        x_temp['TakeOn'] = 0
+                    if 'BlockedPass' not in x_temp.columns.tolist():
+                        x_temp['BlockedPass'] = 0
+                    if 'SavedShot' not in x_temp.columns.tolist():
+                        x_temp['SavedShot'] = 0
+                    if 'CornerAwarded' not in x_temp.columns.tolist():
+                        x_temp['CornerAwarded'] = 0
+                    if 'Dispossessed' not in x_temp.columns.tolist():
+                        x_temp['Dispossessed'] = 0
+                    if 'Interception' not in x_temp.columns.tolist():
+                        x_temp['Interception'] = 0
 
-                x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
-                                'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
+                    x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
+                                    'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
 
-                corr = dict(zip(x_temp.shirtNo, x_temp.index))
-                x_i = x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
-                                'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values
-                
-                x_i2 = x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values
-                
-                if len(x_i) == 11:
-                    flag_away.append(False)
-                else:
-                    flag_away.append(True)
+                    corr = dict(zip(x_temp.shirtNo, x_temp.index))
+                    x_i = x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
+                                    'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values
                     
-                xs_away.append(x_i)
-                xs2_away.append(x_i2)
+                    x_i2 = x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values
+                    
+                    if len(x_i) == 11:
+                        flag_away.append(False)
+                    else:
+                        flag_away.append(True)
+                        
+                    xs_away.append(x_i)
+                    xs2_away.append(x_i2)
 
-                results_away.append(np.array([g]))
+                    results_away.append(np.array([g]))
 
-                edge = b.sort_values(by = 'shirtNo')
-                edge['pass_traj'] = edge['position'] + edge['position_end']
-                edge_a = list(edge['shirtNo'])
+                    edge = b.sort_values(by = 'shirtNo')
+                    edge['pass_traj'] = edge['position'] + edge['position_end']
+                    edge_a = list(edge['shirtNo'])
 
-                for a in range(len(edge_a)):
-                    edge_a[a] = corr[edge_a[a]]
+                    for a in range(len(edge_a)):
+                        edge_a[a] = corr[edge_a[a]]
 
-                edge_b = list(edge['shirtNo_end'])
+                    edge_b = list(edge['shirtNo_end'])
 
-                for a in range(len(edge_b)):
-                    edge_b[a] = corr[edge_b[a]]
+                    for a in range(len(edge_b)):
+                        edge_b[a] = corr[edge_b[a]]
 
-                edge_index = np.array([edge_a, edge_b])
-                edge_attr = edge[['pass_count']].values
+                    edge_index = np.array([edge_a, edge_b])
+                    edge_attr = edge[['pass_count']].values
 
-                if 'Card' not in x_temp.columns.tolist():
-                    x_temp['Card'] = 0
-                if 'OffsidePass' not in x_temp.columns.tolist():
-                    x_temp['OffsidePass'] = 0
-                if 'OffsideProvoked' not in x_temp.columns.tolist():
-                    x_temp['OffsideProvoked'] = 0
-                if 'Punch' not in x_temp.columns.tolist():
-                    x_temp['Punch'] = 0
-                if 'Save' not in x_temp.columns.tolist():
-                    x_temp['Save'] = 0
-                if 'MissedShots' not in x_temp.columns.tolist():
-                    x_temp['MissedShots'] = 0
-                if 'Tackle' not in x_temp.columns.tolist():
-                    x_temp['Tackle'] = 0
-                if 'TakeOn' not in x_temp.columns.tolist():
-                    x_temp['TakeOn'] = 0
-                if 'BlockedPass' not in x_temp.columns.tolist():
-                    x_temp['BlockedPass'] = 0
-                if 'SavedShot' not in x_temp.columns.tolist():
-                    x_temp['SavedShot'] = 0
-                if 'CornerAwarded' not in x_temp.columns.tolist():
-                    x_temp['CornerAwarded'] = 0
-                if 'Dispossessed' not in x_temp.columns.tolist():
-                    x_temp['Dispossessed'] = 0
-                if 'Interception' not in x_temp.columns.tolist():
-                    x_temp['Interception'] = 0
+                    if 'Card' not in x_temp.columns.tolist():
+                        x_temp['Card'] = 0
+                    if 'OffsidePass' not in x_temp.columns.tolist():
+                        x_temp['OffsidePass'] = 0
+                    if 'OffsideProvoked' not in x_temp.columns.tolist():
+                        x_temp['OffsideProvoked'] = 0
+                    if 'Punch' not in x_temp.columns.tolist():
+                        x_temp['Punch'] = 0
+                    if 'Save' not in x_temp.columns.tolist():
+                        x_temp['Save'] = 0
+                    if 'MissedShots' not in x_temp.columns.tolist():
+                        x_temp['MissedShots'] = 0
+                    if 'Tackle' not in x_temp.columns.tolist():
+                        x_temp['Tackle'] = 0
+                    if 'TakeOn' not in x_temp.columns.tolist():
+                        x_temp['TakeOn'] = 0
+                    if 'BlockedPass' not in x_temp.columns.tolist():
+                        x_temp['BlockedPass'] = 0
+                    if 'SavedShot' not in x_temp.columns.tolist():
+                        x_temp['SavedShot'] = 0
+                    if 'CornerAwarded' not in x_temp.columns.tolist():
+                        x_temp['CornerAwarded'] = 0
+                    if 'Dispossessed' not in x_temp.columns.tolist():
+                        x_temp['Dispossessed'] = 0
+                    if 'Interception' not in x_temp.columns.tolist():
+                        x_temp['Interception'] = 0
 
-                x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
-                                'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
-                
-                x = x_i if cnt == 1 else np.vstack([x, x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
-                                                            'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
-                                                            'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                                            'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values])
-
-                x2_away = edge_attr if cnt == 1 else np.vstack([x2_away, edge[['pass_count']].values])
-
-                x3 = x_i2 if cnt == 1 else np.vstack([x3, x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                    x_temp = x_temp[['index', 'shirtNo', 'position', 'height', 'weight', 'ratings', 'touches', 'passesTotal',
+                                    'passesAccurate','subs', 'paRate', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'x', 'y', 'OffsidePass', 'OffsideProvoked', 'Punch']]
+                    
+                    x = x_i if cnt == 1 else np.vstack([x, x_temp.drop(['index', 'shirtNo', 'touches', 'passesTotal', 'passesAccurate','subs',
+                                                                'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
                                                                 'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
-                                                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values])
-                edge_indices_away.append(edge_index)
-                edge_attributes_away.append(edge_attr)
+                                                                'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn', 'OffsidePass', 'OffsideProvoked', 'Punch'], axis = 1).values])
+
+                    x2_away = edge_attr if cnt == 1 else np.vstack([x2_away, edge[['pass_count']].values])
+
+                    x3 = x_i2 if cnt == 1 else np.vstack([x3, x_temp[['touches', 'passesTotal', 'passesAccurate','subs', 'Aerial', 'BallRecovery', 'BallTouch', 'BlockedPass', 
+                                                                    'Card',  'Clearance', 'CornerAwarded', 'Dispossessed', 'Foul', 'Interception', 
+                                                                    'MissedShots', 'Save', 'SavedShot', 'Tackle', 'TakeOn','OffsidePass', 'OffsideProvoked', 'Punch']].values])
+                    edge_indices_away.append(edge_index)
+                    edge_attributes_away.append(edge_attr)
+                except:
+                    pass
 
         x3s = []
         for i in range(len(xs_away)):
@@ -804,6 +810,3 @@ class get_away_data:
                 pass
 
         return dataset_new_away
-
-
-                        
