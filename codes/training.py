@@ -1,11 +1,7 @@
-import pandas as pd 
-import numpy as np
-from tqdm import tqdm
 import torch
-import time
 import pickle
 
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import GATConv
 
 import warnings
 from pandas.errors import SettingWithCopyWarning
@@ -29,8 +25,8 @@ GPU_NUM = args.gpu_num
 device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
 torch.cuda.set_device(device) 
 
-home_directory = 'final_home_90.json'
-away_directory = 'final_away_90.json'
+home_directory = f'final_home_{args.pred_min}.json'
+away_directory = f'final_away_{args.pred_min}.json'
 
 with open(home_directory, 'rb') as f:
     dataset_home = pickle.load(f)
@@ -40,7 +36,10 @@ with open(away_directory, 'rb') as f:
 
 if __name__ == "__main__":
 
-    batchsize = 64
+    if args.pred_min != 45:
+        batchsize = 64
+    else:
+        batchsize = 16
     test_size = 0.2 
     valid_size = 0.25
     random_state = 42
@@ -59,7 +58,7 @@ if __name__ == "__main__":
     E_PATIENCE = args.e_patience
     LEARNING_RATE = args.lr
 
-    model = GNN(input_size = 7, hidden_channels = 128, hidden_channels2 = 128, hidden_channels3 = 64, mid_channel = 64, final_channel = 16, len_added = 16, num_classes = 3, conv = GCNConv)
+    model = GNN(input_size = 7, hidden_channels = 128, hidden_channels2 = 128, hidden_channels3 = 64, mid_channel = 64, final_channel = 16, len_added = 16, num_classes = 3, conv = GATConv)
 
     train_util = train_utils()
 
