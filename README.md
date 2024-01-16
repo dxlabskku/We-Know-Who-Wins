@@ -4,7 +4,7 @@ This repository contains the Pytorch implementation code for the paper "We Know 
 
 ## Architectures
 
-![Model_Structure](codes/model_structure_GAT.png)
+![Model_Structure](codes/model_architecture.png)
 
 Both the passing graph and in-game features of each team are input to the model. The passing graph passes through three graph network blocks consisting of graph attention-dropout-elu layer to be pooled into graph embedding. The graph embeddings of both teams that have been fused with the in-game features are combined again to finally return the probability for each class.
 
