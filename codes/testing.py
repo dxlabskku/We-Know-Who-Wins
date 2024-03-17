@@ -4,12 +4,8 @@ import pickle
 
 from sklearn import metrics
 
-import warnings
-from pandas.errors import SettingWithCopyWarning
 from os import listdir
 from os.path import isfile, join
-
-warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
 from utils.preprocess_utils import *
 from utils.training_utils import *
@@ -61,6 +57,13 @@ if __name__ == "__main__":
             print(f"\nF1-Score for Home Win : {metrics.f1_score(merged_array1, merged_array2, average = None)[0]}")
             print(f"\nF1-Score for Away Win : {metrics.f1_score(merged_array1, merged_array2, average = None)[1]}")
             print(f"\nF1-Score for Draw : {metrics.f1_score(merged_array1, merged_array2, average = None)[2]}")
+            print(f"\nPrecision for Home Win : {metrics.precision_score(merged_array1, merged_array2, average = None)[0]}")
+            print(f"\nPrecision for Away Win : {metrics.precision_score(merged_array1, merged_array2, average = None)[1]}")
+            print(f"\nPrecision for Draw : {metrics.precision_score(merged_array1, merged_array2, average = None)[2]}")
+            print(f"\nRecall for Home Win : {metrics.recall_score(merged_array1, merged_array2, average = None)[0]}")
+            print(f"\nRecall for Away Win : {metrics.recall_score(merged_array1, merged_array2, average = None)[1]}")
+            print(f"\nRecall for Draw : {metrics.recall_score(merged_array1, merged_array2, average = None)[2]}")
+            
 
         else:
             file_dir = input("Provide your directory with test html files : ")  
@@ -115,6 +118,12 @@ if __name__ == "__main__":
                 print(f"\nF1-Score for Home Win : {metrics.f1_score(merged_array1, merged_array2, average = None)[0]}")
                 print(f"\nF1-Score for Away Win : {metrics.f1_score(merged_array1, merged_array2, average = None)[1]}")
                 print(f"\nF1-Score for Draw : {metrics.f1_score(merged_array1, merged_array2, average = None)[2]}")
+                print(f"\nPrecision for Home Win : {metrics.precision_score(merged_array1, merged_array2, average = None)[0]}")
+                print(f"\nPrecision for Away Win : {metrics.precision_score(merged_array1, merged_array2, average = None)[1]}")
+                print(f"\nPrecision for Draw : {metrics.precision_score(merged_array1, merged_array2, average = None)[2]}")
+                print(f"\nRecall for Home Win : {metrics.recall_score(merged_array1, merged_array2, average = None)[0]}")
+                print(f"\nRecall for Away Win : {metrics.recall_score(merged_array1, merged_array2, average = None)[1]}")
+                print(f"\nRecall for Draw : {metrics.recall_score(merged_array1, merged_array2, average = None)[2]}")
 
             else:
                 scaler_dir = 'scalers.json'
