@@ -3,11 +3,7 @@ import torch
 from os import listdir
 from os.path import isfile, join
 
-import warnings
-from pandas.errors import SettingWithCopyWarning
 import pickle
-
-warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
 from utils.preprocess_utils import * 
 
@@ -23,7 +19,7 @@ GPU_NUM = args.gpu_num
 device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
 torch.cuda.set_device(device) # change allocation of current GPU
 
-directory = 'dataset/'
+directory = 'Datasets/'
 files = [f for f in listdir(directory) if isfile(join(directory, f))]
 
 preprocess_home = preprocess_home_data(directory, files, args.pred_min)
