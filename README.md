@@ -14,11 +14,9 @@ Please refer to [requirements.txt](requirements.txt) for package dependency to r
 
 ## Data
 
-The data used in this study is from England's 1st division professional football league (Premier League) and 2nd division professional football league (Championship League) for the 20/21, 21/22, and 22/23 seasons, and consists of a total of 2835 games. All data was crawled from [Whoscored.com](https://1xbet.whoscored.com/), and the raw data is the HTML file of the web page for each match. The HTML files are shared through the link below due to size issues.
+The data used in this study is from England's 1st division professional football league (Premier League) and 2nd division professional football league (Championship League) for the 20/21, 21/22, and 22/23 seasons, and consists of a total of 2835 games. All data was crawled from [Whoscored.com](https://1xbet.whoscored.com/), and the raw data is the HTML file of the web page for each match. The HTML files are shared through the zip file from our supplementary materials.
 
-[Filelink](https://drive.google.com/drive/folders/1w2XSlFA7iWhVxeO2IGEC8JGbf-X7YHNc?usp=drive_link)
-
-**After downloading all html files, please create a new folder named `dataset` under `codes` folder to save the downloaded files.**
+**When reproducing our code, please create a new folder named `Datasets` under `codes` folder to save the data.**
 
 ## Usage
 
@@ -31,6 +29,8 @@ This step takes raw html files as input and returns preprocessed `torch_geometri
 ```python
 python3 preprocess.py --gpu_num [YOUR GPU NUM] --pred_min [Prediction Minute]
 ```
+
+**However, we highly recommend you to skip the preprocessing part and directly go to the training part utlizing the uploaded preprocessed json files `final_home_90.json` and `final_away_90.json`, and the scaler `scaler.json` since this step might take more than an hour depending on the gpu capability**
 
 2. Training
 
