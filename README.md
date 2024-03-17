@@ -1,6 +1,6 @@
-# Passing-Is-All-You-Know
+# We-Know-Who-Wins
 
-This repository contains the Pytorch implementation code for the paper "Passing is All You Know: Graph-oriented Approaches of Passing Networks for Predictive Football Match Outcomes"
+This repository contains the Pytorch implementation code for the paper "We Know Who Wins: Graph-oriented Approaches of Passing Networks for Predictive Football Match Outcomes"
 
 ## Architectures
 
